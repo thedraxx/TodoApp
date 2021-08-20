@@ -14,22 +14,16 @@ import shortid from 'shortid';
 import {Picker} from '@react-native-picker/picker';
 
 const Formulario = ({
-  citas,
-  setCitas,
+  task,
+  settask,
   guardarMostrarForm,
-  guardarCitasStorage,
+  guardartaskStorage,
 }) => {
-  const [paciente, guardarPaciente] = useState('');
-  const [propietario, guardarPropietario] = useState('');
-  const [telefono, guardarTelefono] = useState('');
-  const [sintomas, guardarSintomas] = useState('');
-
-  const [fecha, guardarFecha] = useState('');
-  const [hora, guardarHora] = useState('');
-
+  const [Task, guardarTask] = useState('');
+  const [DeadLine, guardarDeadLine] = useState('');
+  const [Start, guardarStart] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-
   const [pick, SavePick] = useState('');
   const ObtainPick = pick => {
     SavePick(pick);
@@ -60,9 +54,9 @@ const Formulario = ({
     setDatePickerVisibility(false);
   };
 
-  const confirmarFecha = date => {
+  const confirmarDeadLine = date => {
     const opciones = {year: 'numeric', month: 'long', day: '2-digit'};
-    guardarFecha(date.toLocaleDateString('es-ES', opciones));
+    guardarDeadLine(date.toLocaleDateString('es-ES', opciones));
     hideDatePicker();
   };
 
@@ -76,9 +70,9 @@ const Formulario = ({
     setTimePickerVisibility(false);
   };
 
-  const confirmarHora = hora => {
+  const confirmarStart = Start => {
     const opciones = {hour: 'numeric', minute: '2-digit'};
-    guardarHora(hora.toLocaleString('em-US', opciones));
+    guardarStart(Start.toLocaleString('em-US', opciones));
     hideTimePicker();
   };
 
@@ -87,12 +81,9 @@ const Formulario = ({
   const crearNuevaCita = () => {
     //Validar
     if (
-      paciente.trim() === '' ||
-      propietario.trim() === '' ||
-      telefono.trim() === '' ||
-      fecha.trim() === '' ||
-      hora.trim() === '' ||
-      sintomas.trim() === '' ||
+      Task.trim() === '' ||
+      DeadLine.trim() === '' ||
+      Start.trim() === '' ||
       pick.trim() === '' ||
       repeat.trim() === ''
     ) {
@@ -104,23 +95,20 @@ const Formulario = ({
     // crear una nueva cita
 
     const cita = {
-      paciente,
-      propietario,
-      telefono,
-      fecha,
-      hora,
-      sintomas,
+      Task,
+      DeadLine,
+      Start,
       pick,
       repeat,
     };
     cita.id = shortid.generate();
 
     //agregar al state
-    const citasNuevo = [...citas, cita];
-    setCitas(citasNuevo);
+    const taskNuevo = [...task, cita];
+    settask(taskNuevo);
 
-    // Pasar las nuevas citas al Storage
-    guardarCitasStorage(JSON.stringify(citasNuevo));
+    // Pasar las nuevas task al Storage
+    guardartaskStorage(JSON.stringify(taskNuevo));
 
     // ocultar el formulario
     guardarMostrarForm(false);
@@ -133,54 +121,61 @@ const Formulario = ({
       <React.Fragment>
         <View style={styles.formulario}>
           <View>
-            <Text style={styles.label}> Paciente </Text>
+            <Text style={styles.label}> Task </Text>
             <TextInput
               style={styles.input}
-              onChangeText={texto => guardarPaciente(texto)}
+              onChangeText={texto => guardarTask(texto)}
             />
           </View>
+
           <View>
-            <Text style={styles.label}> Dueno </Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={texto => guardarPropietario(texto)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}> Telefono Contacto: </Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={texto => guardarTelefono(texto)}
-              keyboardType="numeric"
-            />
-          </View>
-          <View>
-            <Text style={styles.label}> Fecha: </Text>
-            <Button title="Seleccionar Fecha" onPress={showDatePicker} />
+            <Text style={styles.label}> DeadLine: </Text>
+            <Button title="Seleccionar DeadLine" onPress={showDatePicker} />
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
-              onConfirm={confirmarFecha}
+              onConfirm={confirmarDeadLine}
               onCancel={hideDatePicker}
               locale="es_ES"
             />
-            <Text>{fecha} </Text>
+            <Text>{DeadLine} </Text>
           </View>
+
           <View>
-            <Text style={styles.label}> Hora: </Text>
-            <Button title="Seleccionar Hora" onPress={showTimePicker} />
+            <Text style={styles.label}> Start: </Text>
+            <Button title="Seleccionar Start" onPress={showTimePicker} />
             <DateTimePickerModal
               isVisible={isTimePickerVisible}
               mode="time"
-              onConfirm={confirmarHora}
+              onConfirm={confirmarStart}
               onCancel={hideTimePicker}
               locale="es_ES"
               is24Hour
             />
-            <Text>{hora} </Text>
+            <Text>{Start} </Text>
+            <View>
+              <Text style={styles.label}> Remind: </Text>
+              <Picker
+                selectedValue={repeat}
+                onValueChange={repeat => ObtainRepeat(repeat)}>
+                <Picker.Item label=" -Seleccione- " value="" />
+                <Picker.Item
+                  label=" -5 minutes early- "
+                  value="5 minutes early"
+                />
+                <Picker.Item
+                  label=" -10 minutes early- "
+                  value="10 minutes early"
+                />
+                <Picker.Item
+                  label=" -15 minutes early- "
+                  value="15 minutes early"
+                />
+              </Picker>
+            </View>
           </View>
           <View>
-            <Text style={styles.label}> Recordar cada: </Text>
+            <Text style={styles.label}> Repeat: </Text>
             <Picker
               selectedValue={pick}
               onValueChange={pick => ObtainPick(pick)}>
@@ -191,36 +186,6 @@ const Formulario = ({
             </Picker>
           </View>
 
-          <View>
-            <Text style={styles.label}> Repeat: </Text>
-            <Picker
-              selectedValue={repeat}
-              onValueChange={repeat => ObtainRepeat(repeat)}>
-              <Picker.Item label=" -Seleccione- " value="" />
-              <Picker.Item
-                label=" -5 minutes early- "
-                value="5 minutes early"
-              />
-              <Picker.Item
-                label=" -10 minutes early- "
-                value="10 minutes early"
-              />
-              <Picker.Item
-                label=" -15 minutes early- "
-                value="15 minutes early"
-              />
-            </Picker>
-          </View>
-
-          <View>
-            <Text style={styles.label}> Sintomas: </Text>
-            <TextInput
-              multiline
-              style={styles.input}
-              onChangeText={texto => guardarSintomas(texto)}
-              keyboardType="numeric"
-            />
-          </View>
           <View>
             <TouchableHighlight
               onPress={() => crearNuevaCita()}
@@ -245,6 +210,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 15,
     marginTop: 20,
+    borderRadius: 25,
   },
 
   input: {
