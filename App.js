@@ -64,22 +64,12 @@ const App = () => {
   return (
     <TouchableWithoutFeedback onPress={() => cerrarTeclado()}>
       <View style={styles.contenedor}>
-        <Text style={styles.titulo}>ADMINISTRADOR DE CITAS</Text>
-
-        <View>
-          <TouchableHighlight
-            onPress={() => mostrarFormulario()}
-            style={styles.btnmostrarForm}>
-            <Text style={styles.TextoMostrarForm}>
-              {mostrarform ? 'cancelar crear cita' : 'crear nueca cita'}
-            </Text>
-          </TouchableHighlight>
-        </View>
+        <Text style={styles.tittle}>To-do app</Text>
 
         <View style={styles.contenido}>
           {mostrarform ? (
             <React.Fragment>
-              <Text style={styles.titulo}> Crear una nueva cita</Text>
+              <Text style={styles.task}> Add Task</Text>
               <Formulario
                 citas={citas}
                 setCitas={setCitas}
@@ -89,11 +79,11 @@ const App = () => {
             </React.Fragment>
           ) : (
             <React.Fragment>
-              <Text style={styles.titulo}>
+              <Text style={styles.task}>
                 {' '}
                 {citas.length > 0
-                  ? 'Administra tus citas'
-                  : 'No hay citas agregar una'}
+                  ? 'Pending Tasks'
+                  : '( ´ ω ` ) Thats all  for today'}
               </Text>
               <FlatList
                 style={styles.listado}
@@ -106,6 +96,16 @@ const App = () => {
             </React.Fragment>
           )}
         </View>
+
+        <View>
+          <TouchableHighlight
+            onPress={() => mostrarFormulario()}
+            style={styles.btnmostrarForm}>
+            <Text style={styles.TextoMostrarForm}>
+              {mostrarform ? 'Cancel' : 'Add Task'}
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -117,11 +117,17 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 
-  titulo: {
-    textAlign: 'left',
-    marginTop: Platform.OS === 'ios' ? 40 : 20,
-    marginLeft: 50,
-    fontSize: 15,
+  task: {
+    marginTop: Platform.OS === 'ios' ? 40 : 10,
+    marginLeft: 10,
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+  },
+  tittle: {
+    marginTop: Platform.OS === 'ios' ? 40 : 30,
+    marginLeft: 20,
+    fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 20,
   },
@@ -137,9 +143,10 @@ const styles = StyleSheet.create({
 
   btnmostrarForm: {
     padding: 10,
-    backgroundColor: 'red',
+    backgroundColor: '#2dff3a',
     marginVertical: 5,
     marginHorizontal: 30,
+    borderRadius: 15,
   },
 
   TextoMostrarForm: {

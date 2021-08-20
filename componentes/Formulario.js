@@ -257,9 +257,10 @@ const styles = StyleSheet.create({
 
   btnSubir: {
     padding: 10,
-    backgroundColor: 'red',
+    backgroundColor: '#64b688',
     marginVertical: 10,
     marginHorizontal: 1,
+    borderRadius: 20,
   },
 
   TextoSubir: {
