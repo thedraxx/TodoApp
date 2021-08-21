@@ -88,11 +88,8 @@ const Formulario = ({
     //Validar
     if (
       paciente.trim() === '' ||
-      propietario.trim() === '' ||
-      telefono.trim() === '' ||
       fecha.trim() === '' ||
       hora.trim() === '' ||
-      sintomas.trim() === '' ||
       pick.trim() === '' ||
       repeat.trim() === ''
     ) {
@@ -104,14 +101,11 @@ const Formulario = ({
     // crear una nueva cita
 
     const cita = {
-      paciente,
-      propietario,
-      telefono,
       fecha,
       hora,
-      sintomas,
       pick,
       repeat,
+      paciente,
     };
     cita.id = shortid.generate();
 
@@ -140,21 +134,6 @@ const Formulario = ({
             />
           </View>
           <View>
-            <Text style={styles.label}> Dueno </Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={texto => guardarPropietario(texto)}
-            />
-          </View>
-          <View>
-            <Text style={styles.label}> Telefono Contacto: </Text>
-            <TextInput
-              style={styles.input}
-              onChangeText={texto => guardarTelefono(texto)}
-              keyboardType="numeric"
-            />
-          </View>
-          <View>
             <Text style={styles.label}> Fecha: </Text>
             <Button title="Seleccionar Fecha" onPress={showDatePicker} />
             <DateTimePickerModal
@@ -179,6 +158,7 @@ const Formulario = ({
             />
             <Text>{hora} </Text>
           </View>
+
           <View>
             <Text style={styles.label}> Recordar cada: </Text>
             <Picker
@@ -210,16 +190,6 @@ const Formulario = ({
                 value="15 minutes early"
               />
             </Picker>
-          </View>
-
-          <View>
-            <Text style={styles.label}> Sintomas: </Text>
-            <TextInput
-              multiline
-              style={styles.input}
-              onChangeText={texto => guardarSintomas(texto)}
-              keyboardType="numeric"
-            />
           </View>
           <View>
             <TouchableHighlight

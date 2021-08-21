@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Text,
-  StyleSheet,
-  View,
-  FlatList,
-  TouchableHighlight,
-} from 'react-native';
+import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
 
 const Cita = ({item, eliminarPaciente}) => {
   const dialogoEliminar = id => {
@@ -18,16 +12,6 @@ const Cita = ({item, eliminarPaciente}) => {
       <View>
         <Text style={styles.label}> Paciente:</Text>
         <Text style={styles.texto}>{item.paciente}</Text>
-      </View>
-
-      <View>
-        <Text style={styles.label}> Propietario:</Text>
-        <Text style={styles.texto}>{item.propietario}</Text>
-      </View>
-
-      <View>
-        <Text style={styles.label}> sintomas:</Text>
-        <Text style={styles.texto}>{item.sintomas}</Text>
       </View>
 
       <View>
