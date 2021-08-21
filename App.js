@@ -12,6 +12,7 @@ import {
 import Cita from './componentes/Cita.js';
 import Formulario from './componentes/Formulario.js';
 import AsyncStorage from '@react-native-community/async-storage';
+import styled from 'styled-components/native';
 
 const App = () => {
   //definir el state
@@ -61,10 +62,16 @@ const App = () => {
     }
   };
 
+  // Styled Components
+  const Text = styled.Text`
+    text-align: left
+    color: black
+  `;
+
   return (
     <TouchableWithoutFeedback onPress={() => cerrarTeclado()}>
       <View style={styles.contenedor}>
-        <Text style={styles.tittle}>To-do app</Text>
+        <Text style={styles.tittle}>TO-DO App</Text>
 
         <View style={styles.contenido}>
           {mostrarform ? (
@@ -130,6 +137,7 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 'bold',
     marginBottom: 20,
+    fontFamily: 'Lato-Regular',
   },
 
   contenido: {
