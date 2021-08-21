@@ -15,28 +15,28 @@ import AsyncStorage from '@react-native-community/async-storage';
 
 const App = () => {
   //definir el state
-  const [task, settask] = useState([]);
+  const [citas, setCitas] = useState([]);
   const [mostrarform, guardarMostrarForm] = useState(false);
 
   useEffect(() => {
-    const obtenertaskStorage = async () => {
+    const obtenerCitasStorage = async () => {
       try {
-        const taskStorage = await AsyncStorage.getItem('task');
-        if (taskStorage) {
-          settask(JSON.parse(taskStorage));
+        const citasStorage = await AsyncStorage.getItem('citas');
+        if (citasStorage) {
+          setCitas(JSON.parse(citasStorage));
         }
       } catch (error) {
         console.log(error);
       }
     };
-    obtenertaskStorage();
+    obtenerCitasStorage();
   }, []);
 
   //Elimianar Pacientes del state
-  const deleteTask = id => {
-    const taskFiltradas = task.filter(cita => cita.id !== id);
-    settask(taskFiltradas);
-    guardartaskStorage(JSON.stringify(taskFiltradas));
+  const eliminarPaciente = id => {
+    const citasFiltradas = citas.filter(cita => cita.id !== id);
+    setCitas(citasFiltradas);
+    guardarCitasStorage(JSON.stringify(citasFiltradas));
   };
 
   //mustra u oculta el formulario
@@ -51,11 +51,11 @@ const App = () => {
     Keyboard.dismiss();
   };
 
-  // Almacenar las task en el storage
+  // Almacenar las citas en el storage
 
-  const guardartaskStorage = async taskJSON => {
+  const guardarCitasStorage = async citasJSON => {
     try {
-      await AsyncStorage.setItem('task', taskJSON);
+      await AsyncStorage.setItem('citas', citasJSON);
     } catch (error) {
       console.log(error);
     }
@@ -71,25 +71,25 @@ const App = () => {
             <React.Fragment>
               <Text style={styles.task}> Add Task</Text>
               <Formulario
-                task={task}
-                settask={settask}
+                citas={citas}
+                setCitas={setCitas}
                 guardarMostrarForm={guardarMostrarForm}
-                guardartaskStorage={guardartaskStorage}
+                guardarCitasStorage={guardarCitasStorage}
               />
             </React.Fragment>
           ) : (
             <React.Fragment>
               <Text style={styles.task}>
                 {' '}
-                {task.length > 0
+                {citas.length > 0
                   ? 'Pending Tasks'
                   : '( ´ ω ` ) Thats all  for today'}
               </Text>
               <FlatList
                 style={styles.listado}
-                data={task}
+                data={citas}
                 renderItem={({item}) => (
-                  <Cita item={item} deleteTask={deleteTask} />
+                  <Cita item={item} eliminarPaciente={eliminarPaciente} />
                 )}
                 keyExtractor={cita => cita.id}
               />

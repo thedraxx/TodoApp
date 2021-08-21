@@ -1,17 +1,33 @@
 import React from 'react';
-import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
+import {
+  Text,
+  StyleSheet,
+  View,
+  FlatList,
+  TouchableHighlight,
+} from 'react-native';
 
-const Cita = ({item, deleteTask}) => {
+const Cita = ({item, eliminarPaciente}) => {
   const dialogoEliminar = id => {
     console.log('eliminando...', id);
-    deleteTask(id);
+    eliminarPaciente(id);
   };
 
   return (
     <View style={styles.cita}>
       <View>
-        <Text style={styles.label}> Task:</Text>
-        <Text style={styles.texto}>{item.Task}</Text>
+        <Text style={styles.label}> Paciente:</Text>
+        <Text style={styles.texto}>{item.paciente}</Text>
+      </View>
+
+      <View>
+        <Text style={styles.label}> Propietario:</Text>
+        <Text style={styles.texto}>{item.propietario}</Text>
+      </View>
+
+      <View>
+        <Text style={styles.label}> sintomas:</Text>
+        <Text style={styles.texto}>{item.sintomas}</Text>
       </View>
 
       <View>
