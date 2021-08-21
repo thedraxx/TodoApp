@@ -19,20 +19,14 @@ const Formulario = ({
   guardarMostrarForm,
   guardarCitasStorage,
 }) => {
-  const [paciente, guardarPaciente] = useState('');
-  const [propietario, guardarPropietario] = useState('');
-  const [telefono, guardarTelefono] = useState('');
-  const [sintomas, guardarSintomas] = useState('');
-
-  const [fecha, guardarFecha] = useState('');
-  const [hora, guardarHora] = useState('');
-
+  const [task, guardartask] = useState('');
+  const [deadline, guardardeadline] = useState('');
+  const [start, guardarstart] = useState('');
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
-
-  const [pick, SavePick] = useState('');
-  const ObtainPick = pick => {
-    SavePick(pick);
+  const [remind, SavePick] = useState('');
+  const ObtainPick = remind => {
+    SavePick(remind);
   };
 
   const [repeat, SaveRepeat] = useState('');
@@ -43,7 +37,7 @@ const Formulario = ({
   const mostrarAlerta = () => {
     Alert.alert(
       'Error', //titulo
-      'todos los campos son obligatorios', //mensaje
+      'All fields are required', //mensaje
       [
         {
           text: 'OK', //arreglo de botones
@@ -60,9 +54,9 @@ const Formulario = ({
     setDatePickerVisibility(false);
   };
 
-  const confirmarFecha = date => {
+  const confirmardeadline = date => {
     const opciones = {year: 'numeric', month: 'long', day: '2-digit'};
-    guardarFecha(date.toLocaleDateString('es-ES', opciones));
+    guardardeadline(date.toLocaleDateString('es-ES', opciones));
     hideDatePicker();
   };
 
@@ -76,9 +70,9 @@ const Formulario = ({
     setTimePickerVisibility(false);
   };
 
-  const confirmarHora = hora => {
+  const confirmarstart = start => {
     const opciones = {hour: 'numeric', minute: '2-digit'};
-    guardarHora(hora.toLocaleString('em-US', opciones));
+    guardarstart(start.toLocaleString('em-US', opciones));
     hideTimePicker();
   };
 
@@ -87,10 +81,10 @@ const Formulario = ({
   const crearNuevaCita = () => {
     //Validar
     if (
-      paciente.trim() === '' ||
-      fecha.trim() === '' ||
-      hora.trim() === '' ||
-      pick.trim() === '' ||
+      task.trim() === '' ||
+      deadline.trim() === '' ||
+      start.trim() === '' ||
+      remind.trim() === '' ||
       repeat.trim() === ''
     ) {
       //falla la validacion
@@ -101,11 +95,11 @@ const Formulario = ({
     // crear una nueva cita
 
     const cita = {
-      fecha,
-      hora,
-      pick,
+      deadline,
+      start,
+      remind,
       repeat,
-      paciente,
+      task,
     };
     cita.id = shortid.generate();
 
@@ -127,47 +121,47 @@ const Formulario = ({
       <React.Fragment>
         <View style={styles.formulario}>
           <View>
-            <Text style={styles.label}> Paciente </Text>
+            <Text style={styles.label}> Task </Text>
             <TextInput
               style={styles.input}
-              onChangeText={texto => guardarPaciente(texto)}
+              onChangeText={texto => guardartask(texto)}
             />
           </View>
           <View>
-            <Text style={styles.label}> Fecha: </Text>
-            <Button title="Seleccionar Fecha" onPress={showDatePicker} />
+            <Text style={styles.label}> Deadline: </Text>
+            <Button title="Pick a Date" onPress={showDatePicker} />
             <DateTimePickerModal
               isVisible={isDatePickerVisible}
               mode="date"
-              onConfirm={confirmarFecha}
+              onConfirm={confirmardeadline}
               onCancel={hideDatePicker}
               locale="es_ES"
             />
-            <Text>{fecha} </Text>
+            <Text>{deadline} </Text>
           </View>
           <View>
-            <Text style={styles.label}> Hora: </Text>
-            <Button title="Seleccionar Hora" onPress={showTimePicker} />
+            <Text style={styles.label}> Start: </Text>
+            <Button title="start" onPress={showTimePicker} />
             <DateTimePickerModal
               isVisible={isTimePickerVisible}
               mode="time"
-              onConfirm={confirmarHora}
+              onConfirm={confirmarstart}
               onCancel={hideTimePicker}
               locale="es_ES"
               is24Hour
             />
-            <Text>{hora} </Text>
+            <Text>{start} </Text>
           </View>
 
           <View>
-            <Text style={styles.label}> Recordar cada: </Text>
+            <Text style={styles.label}> Remind: </Text>
             <Picker
-              selectedValue={pick}
-              onValueChange={pick => ObtainPick(pick)}>
-              <Picker.Item label=" -Seleccione- " value="" />
-              <Picker.Item label=" -Diariamente- " value="Diariamente" />
-              <Picker.Item label=" -Semanalmente- " value="Semanalmente" />
-              <Picker.Item label=" -Mensualmente- " value="Mensualmente" />
+              selectedValue={remind}
+              onValueChange={remind => ObtainPick(remind)}>
+              <Picker.Item label=" -Select- " value="" />
+              <Picker.Item label=" -daily- " value="daily" />
+              <Picker.Item label=" -weekly- " value="weekly" />
+              <Picker.Item label=" -monthly- " value="monthly" />
             </Picker>
           </View>
 
@@ -176,7 +170,7 @@ const Formulario = ({
             <Picker
               selectedValue={repeat}
               onValueChange={repeat => ObtainRepeat(repeat)}>
-              <Picker.Item label=" -Seleccione- " value="" />
+              <Picker.Item label=" -Select- " value="" />
               <Picker.Item
                 label=" -5 minutes early- "
                 value="5 minutes early"
@@ -195,7 +189,7 @@ const Formulario = ({
             <TouchableHighlight
               onPress={() => crearNuevaCita()}
               style={styles.btnSubir}>
-              <Text style={styles.TextoSubir}>Subir Nueva Cita</Text>
+              <Text style={styles.TextoSubir}>Create a Task...</Text>
             </TouchableHighlight>
           </View>
         </View>

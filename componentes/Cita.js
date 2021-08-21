@@ -1,24 +1,24 @@
 import React from 'react';
 import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
 
-const Cita = ({item, eliminarPaciente}) => {
+const Cita = ({item, deletetask}) => {
   const dialogoEliminar = id => {
     console.log('eliminando...', id);
-    eliminarPaciente(id);
+    deletetask(id);
   };
 
   return (
     <View style={styles.cita}>
       <View>
-        <Text style={styles.label}> Paciente:</Text>
-        <Text style={styles.texto}>{item.paciente}</Text>
+        <Text style={styles.label}> task:</Text>
+        <Text style={styles.texto}>{item.task}</Text>
       </View>
 
       <View>
         <TouchableHighlight
           onPress={() => dialogoEliminar(item.id)}
           style={styles.eliminar}>
-          <Text style={styles.TextoEliminar}>Eliminar</Text>
+          <Text style={styles.TextoEliminar}>Delete</Text>
         </TouchableHighlight>
       </View>
     </View>

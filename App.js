@@ -33,7 +33,7 @@ const App = () => {
   }, []);
 
   //Elimianar Pacientes del state
-  const eliminarPaciente = id => {
+  const deletetask = id => {
     const citasFiltradas = citas.filter(cita => cita.id !== id);
     setCitas(citasFiltradas);
     guardarCitasStorage(JSON.stringify(citasFiltradas));
@@ -89,7 +89,7 @@ const App = () => {
                 style={styles.listado}
                 data={citas}
                 renderItem={({item}) => (
-                  <Cita item={item} eliminarPaciente={eliminarPaciente} />
+                  <Cita item={item} deletetask={deletetask} />
                 )}
                 keyExtractor={cita => cita.id}
               />
