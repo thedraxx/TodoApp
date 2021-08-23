@@ -12,7 +12,6 @@ import {
 import Cita from './componentes/Cita';
 import Formulario from './componentes/Formulario';
 import AsyncStorage from '@react-native-community/async-storage';
-import styled from 'styled-components/native';
 
 const App = () => {
   //definir el state

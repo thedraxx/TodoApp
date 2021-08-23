@@ -13,6 +13,7 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import shortid from 'shortid';
 import {Picker} from '@react-native-picker/picker';
 
+
 const Formulario = ({
   citas,
   setCitas,
@@ -22,15 +23,18 @@ const Formulario = ({
   const [task, guardartask] = useState('');
   const [deadline, guardardeadline] = useState('');
   const [start, guardarstart] = useState('');
+  const [end, guardarend] = useState('');
+
   const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
   const [isTimePickerVisible, setTimePickerVisibility] = useState(false);
+  const [isTimeEndPickerVisible, setTimeEndPickerVisibility] = useState(false);
   const [remind, SavePick] = useState('');
-  const ObtainPick = remind => {
+  const ObtainPick = (remind: React.SetStateAction<string>) => {
     SavePick(remind);
   };
 
   const [repeat, SaveRepeat] = useState('');
-  const ObtainRepeat = repeat => {
+  const ObtainRepeat = (repeat: React.SetStateAction<string>) => {
     SaveRepeat(repeat);
   };
 
@@ -54,7 +58,7 @@ const Formulario = ({
     setDatePickerVisibility(false);
   };
 
-  const confirmardeadline = date => {
+  const confirmardeadline = (date: { toLocaleDateString: (arg0: string, arg1: { year: string; month: string; day: string; }) => React.SetStateAction<string>; }) => {
     const opciones = {year: 'numeric', month: 'long', day: '2-digit'};
     guardardeadline(date.toLocaleDateString('es-ES', opciones));
     hideDatePicker();
@@ -70,12 +74,29 @@ const Formulario = ({
     setTimePickerVisibility(false);
   };
 
-  const confirmarstart = start => {
-    const opciones = {hour: 'numeric', minute: '2-digit'};
-    guardarstart(start.toLocaleString('em-US', opciones));
+  const confirmarstart = (start: { toLocaleString: (arg0: string, arg1: { hour: string; minute: string; hour12: boolean; }) => React.SetStateAction<string>; }) => {
+    const opciones = {hour: 'numeric', minute: '2-digit', hour12: false};
+    guardarstart(start.toLocaleString('es-ES', opciones));
     hideTimePicker();
   };
 
+  // Muestra u oculta el time picker end
+
+  const showTimeEndPicker = () => {
+    setTimeEndPickerVisibility(true);
+  };
+
+  const hideTimeEndPicker = () => {
+    setTimeEndPickerVisibility(false);
+  };
+
+  const confirmarEnd = (end: { toLocaleString: (arg0: string, arg1: { hour: string; minute: string; }) => React.SetStateAction<string>; }) => {
+    const opciones = {hour: 'numeric', minute: '2-digit'};
+    guardarend(end.toLocaleString('en-US', opciones));
+    hideTimeEndPicker();
+  };
+
+  
   //Crear nueva cita
 
   const crearNuevaCita = () => {
@@ -84,8 +105,10 @@ const Formulario = ({
       task.trim() === '' ||
       deadline.trim() === '' ||
       start.trim() === '' ||
+      end.trim() === '' ||
       remind.trim() === '' ||
-      repeat.trim() === ''
+      repeat.trim() === '' 
+      
     ) {
       //falla la validacion
       mostrarAlerta();
@@ -97,6 +120,7 @@ const Formulario = ({
     const cita = {
       deadline,
       start,
+      end,
       remind,
       repeat,
       task,
@@ -114,6 +138,11 @@ const Formulario = ({
     guardarMostrarForm(false);
 
     // resetar formulario
+    // Resetear el formulario
+    guardartask('');
+    guardardeadline('');
+    guardarstart('');
+    guardarend('');
   };
 
   return (
@@ -139,19 +168,35 @@ const Formulario = ({
             />
             <Text>{deadline} </Text>
           </View>
+
           <View>
             <Text style={styles.label}> Start: </Text>
             <Button title="start" onPress={showTimePicker} />
             <DateTimePickerModal
               isVisible={isTimePickerVisible}
-              mode="time"
+              mode='time'
               onConfirm={confirmarstart}
               onCancel={hideTimePicker}
               locale="es_ES"
               is24Hour
             />
-            <Text>{start} </Text>
+            <Text>{start}</Text>
           </View>
+
+          <View>
+            <Text style={styles.label}> End: </Text>
+            <Button title="end" onPress={showTimeEndPicker} />
+            <DateTimePickerModal
+              isVisible={isTimeEndPickerVisible}
+              mode="time"
+              onConfirm={confirmarEnd}
+              onCancel={hideTimeEndPicker}
+              locale="es_ES"
+              is24Hour
+            />
+            <Text>{end}</Text>
+          </View>
+
 
           <View>
             <Text style={styles.label}> Remind: </Text>
@@ -199,6 +244,7 @@ const Formulario = ({
 };
 
 const styles = StyleSheet.create({
+
   formulario: {
     backgroundColor: '#fff',
     paddingHorizontal: 20,
@@ -206,17 +252,19 @@ const styles = StyleSheet.create({
   },
 
   label: {
-    fontWeight: 'bold',
+    flex:1,
+    fontWeight:'bold',
     fontSize: 15,
-    marginTop: 20,
+    marginTop: 15,
+    textAlign:'left',
   },
 
   input: {
     marginTop: 5,
-    height: 20,
-    borderColor: '#fff',
-    borderWidth: 20,
+    height: 35,
+    backgroundColor: '#C5C5C5',
     borderStyle: 'solid',
+    borderRadius:20
   },
 
   btnSubir: {
