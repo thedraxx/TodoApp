@@ -10,7 +10,7 @@ const Cita = ({item, deletetask}) => {
   return (
     <View style={styles.cita}>
       <View>
-        <Text style={styles.label}> task:</Text>
+        <Text style={styles.label}> Task:</Text>
         <Text style={styles.texto}>{item.task}</Text>
       </View>
 
@@ -38,10 +38,13 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: 20,
     marginTop: 20,
+    textAlign:'center'
   },
 
   texto: {
     fontSize: 20,
+    textAlign:'center',
+    fontFamily:'LatoBlack'
   },
 
   eliminar: {
@@ -49,6 +52,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'red',
     marginVertical: 10,
     marginHorizontal: 10,
+    borderRadius:25
   },
 
   TextoEliminar: {
