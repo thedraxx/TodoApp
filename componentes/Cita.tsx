@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, StyleSheet, View, TouchableHighlight} from 'react-native';
 
 const Cita = ({item, deletetask}) => {
-  const dialogoEliminar = id => {
+  const dialogoEliminar = (id: any) => {
     console.log('eliminando...', id);
     deletetask(id);
   };

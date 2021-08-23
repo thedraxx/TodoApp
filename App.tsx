@@ -9,8 +9,8 @@ import {
   TouchableWithoutFeedback,
   Keyboard,
 } from 'react-native';
-import Cita from './componentes/Cita.js';
-import Formulario from './componentes/Formulario.js';
+import Cita from './componentes/Cita';
+import Formulario from './componentes/Formulario';
 import AsyncStorage from '@react-native-community/async-storage';
 import styled from 'styled-components/native';
 
@@ -33,8 +33,9 @@ const App = () => {
     obtenerCitasStorage();
   }, []);
 
+
   //Elimianar Pacientes del state
-  const deletetask = id => {
+  const deletetask = (id: any) => {
     const citasFiltradas = citas.filter(cita => cita.id !== id);
     setCitas(citasFiltradas);
     guardarCitasStorage(JSON.stringify(citasFiltradas));
@@ -54,7 +55,7 @@ const App = () => {
 
   // Almacenar las citas en el storage
 
-  const guardarCitasStorage = async citasJSON => {
+  const guardarCitasStorage = async (citasJSON: string) => {
     try {
       await AsyncStorage.setItem('citas', citasJSON);
     } catch (error) {
